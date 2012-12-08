@@ -1,9 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
@@ -62,6 +60,16 @@ public class TreeGUI extends JPanel implements ItemListener {
     JPanel total = new JPanel();
     total.setLayout(new BoxLayout(total, BoxLayout.Y_AXIS));
     
+    // create JLabel filter
+    JPanel filter = new JPanel();
+    filter.setLayout(new BoxLayout(filter, BoxLayout.X_AXIS));
+    JLabel lbl_filter = new JLabel("Filter: ");
+    field_filter_ = new JTextField();
+    lbl_filter.setLabelFor(field_filter_);
+    filter.add(lbl_filter, BorderLayout.WEST);
+    filter.add(field_filter_, BorderLayout.CENTER);
+    filter.setAlignmentX(Component.LEFT_ALIGNMENT);
+    
     // add trees from parameter to one tree
     DefaultMutableTreeNode all_trees = new DefaultMutableTreeNode();
     for (DefaultMutableTreeNode file : directory) {
@@ -100,24 +108,18 @@ public class TreeGUI extends JPanel implements ItemListener {
     view_file.setMinimumSize(minimumSize);
     split_pane.setDividerLocation(190);
     split_pane.setPreferredSize(new Dimension(400, 300));
+    split_pane.setAlignmentX(Component.LEFT_ALIGNMENT);
     
     // create checkbox component
-    JCheckBox view_hidden_files = new JCheckBox("Display hidden files");
-    view_hidden_files.setSelected(false);
-    view_hidden_files.addItemListener(this);
+    JCheckBox cbx_view_hidden_files = new JCheckBox("Display hidden files");
+    cbx_view_hidden_files.setSelected(false);
+    cbx_view_hidden_files.addItemListener(this);
+    cbx_view_hidden_files.setAlignmentX(Component.LEFT_ALIGNMENT);
     
-    // create JLabel filter
-    JPanel filter = new JPanel(new BorderLayout());
-    JLabel lbl_filter = new JLabel("Filter: ");
-    field_filter_ = new JTextField();
-    lbl_filter.setLabelFor(field_filter_);
-    filter.add(lbl_filter, BorderLayout.WEST);
-    filter.add(field_filter_, BorderLayout.CENTER);
-        
     // add components to JPanel
+    total.add(filter);
     total.add(split_pane);
-    total.add(view_hidden_files);
-    total.add(filter, BorderLayout.SOUTH);
+    total.add(cbx_view_hidden_files);
     return total;
   }
   

@@ -1,11 +1,11 @@
 import java.io.File;
-import java.io.PrintWriter;
-import java.util.Enumeration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.SecurityException;
-import javax.swing.tree.DefaultMutableTreeNode;
+import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Enumeration;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class FileSystem {
   
@@ -100,8 +100,6 @@ public class FileSystem {
       
       treeToTxtFile(tree, destination, false);
       System.out.println("Success!");
-    }  catch (IllegalArgumentException e) {
-      System.err.println("Illegal Argsument");
     } catch (FileNotFoundException e) {
       System.err.println("File not found");
     } catch (SecurityException e) {
