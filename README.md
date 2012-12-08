@@ -5,8 +5,9 @@ Save information about files located on an external volume.
 The GUI displays the hierarchy of files and information about each file.
 
 
-Files:
-  src:
+# Files #
+## src: ##
+  
     ReadWriteUtil -  contains the read and write methods to serialize
                      DefaultMutableTreeNode. Both methods use booleans to determine
                      if they use XMLEncoder or ObjectOutputStream. XMLEncoder /
@@ -26,8 +27,10 @@ Files:
                      hideHiddenFiles method
 
 
-  testDirectory -    a dummy directory used for testing purposes
+##  other:  ##
+  
+    testDirectory -    a dummy directory used for testing purposes
 
-  treeObjects -      contains the serialized DefaultMutableTreeNode files
+    treeObjects -      contains the serialized DefaultMutableTreeNode files
 
-  txtFiles -         contains txtFiles showing hierarchy of files
+    txtFiles -         contains txtFiles showing hierarchy of files
