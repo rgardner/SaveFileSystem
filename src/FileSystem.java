@@ -95,7 +95,7 @@ public class FileSystem {
       DefaultMutableTreeNode tree = dirToTree(directory);
       System.out.println("Built tree");
       
-      ReadWriteUtil.serializeTree(tree, /*use XML*/ false);
+      ReadWriteUtil.serializeTree(tree, /*use XML*/ true);
       System.out.println("Saved Tree");
       
       treeToTxtFile(tree, destination, false);
