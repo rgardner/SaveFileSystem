@@ -1,18 +1,9 @@
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeSelectionModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.JScrollPane;
-
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
@@ -20,12 +11,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
+
 
 public class TreeGUI extends JPanel implements ItemListener {
   private static final long serialVersionUID = 1L; // required to give it a serialVersionUID
   private static JFrame frame_;
   private JTree tree_;
   private JTextArea file_info_;
+  private JTextField field_filter_;
   
   public TreeGUI() {
     // TODO handle null case from readTreesFromFiles
@@ -94,12 +101,23 @@ public class TreeGUI extends JPanel implements ItemListener {
     split_pane.setDividerLocation(190);
     split_pane.setPreferredSize(new Dimension(400, 300));
     
+    // create checkbox component
     JCheckBox view_hidden_files = new JCheckBox("Display hidden files");
     view_hidden_files.setSelected(false);
     view_hidden_files.addItemListener(this);
     
+    // create JLabel filter
+    JPanel filter = new JPanel(new BorderLayout());
+    JLabel lbl_filter = new JLabel("Filter: ");
+    field_filter_ = new JTextField();
+    lbl_filter.setLabelFor(field_filter_);
+    filter.add(lbl_filter, BorderLayout.WEST);
+    filter.add(field_filter_, BorderLayout.CENTER);
+        
+    // add components to JPanel
     total.add(split_pane);
     total.add(view_hidden_files);
+    total.add(filter, BorderLayout.SOUTH);
     return total;
   }
   
