@@ -1,0 +1,10 @@
+testDirectory
+--> bar
+--> --> faz
+--> --> foob
+--> baz
+--> foobar
+--> --> img.gif
+--> test.docx
+
+Created: Thu Dec 06 23:22:03 EST 2012
