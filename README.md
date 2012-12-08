@@ -2,7 +2,7 @@ SaveFileSystem
 ==============
 
 Save information about files located on an external volume.
-The GUI displays the hierarchy of files and information about each file.
+The GUI displays the hierarchy of files and the information about each file.
 
 
 # Files #
