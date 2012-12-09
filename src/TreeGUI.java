@@ -26,16 +26,17 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 public class TreeGUI extends JPanel implements ItemListener {
-  private static final long serialVersionUID = 1L; // required to give it a serialVersionUID
-  private static JFrame frame_;
-  private JTree tree_;
-  private JTextArea file_info_;
-  private JTextField field_filter_;
+  private static final long serialVersionUID = 1L;
+  private static JFrame frame;
+  private JTree tree;
+  private JTextArea fileInfo;
+  private JTextField fieldFilter;
 
   public TreeGUI() {
     // TODO handle null case from readTreesFromFiles
     super(new GridLayout(1, 0));
-    List<DefaultMutableTreeNode> directories = new ArrayList<DefaultMutableTreeNode>();
+    List<DefaultMutableTreeNode> directories =
+        new ArrayList<DefaultMutableTreeNode>();
     try {
       directories = ReadWriteUtil.deserializeTreesFromFiles(/*use XML*/ false);
     } catch (IOException e) {
@@ -48,99 +49,107 @@ public class TreeGUI extends JPanel implements ItemListener {
     add(panel);
   }
 
-  public TreeGUI(DefaultMutableTreeNode directory) {
+  public TreeGUI(final DefaultMutableTreeNode directory) {
     super(new GridLayout(1, 0));
-    List<DefaultMutableTreeNode> directories = new ArrayList<DefaultMutableTreeNode>();
+    List<DefaultMutableTreeNode> directories =
+        new ArrayList<DefaultMutableTreeNode>();
     directories.add(directory);
     JPanel panel = buildDisplay(directories);
     add(panel);
   }
 
-  public JPanel buildDisplay(List<DefaultMutableTreeNode> directory) {
+  public JPanel buildDisplay(final List<DefaultMutableTreeNode> directory) {
     JPanel total = new JPanel();
     total.setLayout(new BoxLayout(total, BoxLayout.Y_AXIS));
 
     // create JLabel filter
     JPanel filter = new JPanel();
     filter.setLayout(new BoxLayout(filter, BoxLayout.X_AXIS));
-    JLabel lbl_filter = new JLabel("Filter: ");
-    field_filter_ = new JTextField();
-    lbl_filter.setLabelFor(field_filter_);
+    JLabel lblFilter = new JLabel("Filter: ");
+    fieldFilter = new JTextField();
+    lblFilter.setLabelFor(fieldFilter);
 
-    filter.add(lbl_filter, BorderLayout.WEST);
-    filter.add(field_filter_, BorderLayout.CENTER);
+    filter.add(lblFilter, BorderLayout.WEST);
+    filter.add(fieldFilter, BorderLayout.CENTER);
     filter.setAlignmentX(Component.LEFT_ALIGNMENT);
 
     // add trees from parameter to one tree
-    DefaultMutableTreeNode all_trees = new DefaultMutableTreeNode();
+    DefaultMutableTreeNode allTrees = new DefaultMutableTreeNode();
     for (DefaultMutableTreeNode file : directory) {
-      all_trees.add(file);
+      allTrees.add(file);
     }
 
     // set up tree JTree
-    tree_ = new JTree(all_trees);
-    tree_.setRootVisible(false);
-    tree_.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-    tree_.addTreeSelectionListener(new TreeSelectionListener() {
-      @Override public void valueChanged(TreeSelectionEvent e) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree_.getLastSelectedPathComponent();
-        if (node == null) return;
+    tree = new JTree(allTrees);
+    tree.setRootVisible(false);
+    tree.getSelectionModel().setSelectionMode(
+        TreeSelectionModel.SINGLE_TREE_SELECTION);
+    tree.addTreeSelectionListener(new TreeSelectionListener() {
+      @Override public void valueChanged(final TreeSelectionEvent e) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+            tree.getLastSelectedPathComponent();
+        if (node == null) {
+          return;
+        }
         CustomFile file = (CustomFile) node.getUserObject();
         displayInfo(file);
       }
     });
-    JScrollPane view_tree = new JScrollPane(tree_);
-    view_tree.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+    JScrollPane viewTree = new JScrollPane(tree);
+    viewTree.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
 
     // set up JTextArea
-    file_info_ = new JTextArea();
-    file_info_.setEditable(false);
-    JScrollPane view_file = new JScrollPane(file_info_);
-    view_file.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
-    view_file.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+    fileInfo = new JTextArea();
+    fileInfo.setEditable(false);
+    JScrollPane viewFile = new JScrollPane(fileInfo);
+    viewFile.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+    viewFile.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
 
     // create split_pane that contains the JTree and JTextArea
-    JSplitPane split_pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    split_pane.setTopComponent(view_tree);
-    split_pane.setBottomComponent(view_file);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setTopComponent(viewTree);
+    splitPane.setBottomComponent(viewFile);
 
-    int min_width = 100;
-    int min_height = 50;
-    int divider_location = 190;
-    int preferred_width = 400;
-    int preferred_height = 300;
-    Dimension minimumSize = new Dimension(min_width, min_height);
-    view_tree.setMinimumSize(minimumSize);
-    view_file.setMinimumSize(minimumSize);
-    split_pane.setDividerLocation(divider_location);
-    split_pane.setPreferredSize(new Dimension(preferred_width, preferred_height));
-    split_pane.setAlignmentX(Component.LEFT_ALIGNMENT);
+    final int minWidth = 100;
+    final int minHeight = 50;
+    final int dividerLocation = 190;
+    final int preferredWidth = 400;
+    final int preferredHeight = 300;
+    Dimension minimumSize = new Dimension(minWidth, minHeight);
+    viewTree.setMinimumSize(minimumSize);
+    viewFile.setMinimumSize(minimumSize);
+    splitPane.setDividerLocation(dividerLocation);
+    splitPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+    splitPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 
     // create checkbox component
-    JCheckBox cbx_view_hidden_files = new JCheckBox("Display hidden files");
-    cbx_view_hidden_files.setSelected(false);
-    cbx_view_hidden_files.addItemListener(this);
-    cbx_view_hidden_files.setAlignmentX(Component.LEFT_ALIGNMENT);
+    JCheckBox cBXHiddenFiles = new JCheckBox("Display hidden files");
+    cBXHiddenFiles.setSelected(false);
+    cBXHiddenFiles.addItemListener(this);
+    cBXHiddenFiles.setAlignmentX(Component.LEFT_ALIGNMENT);
 
     // add components to JPanel
     total.add(filter);
-    total.add(split_pane);
-    total.add(cbx_view_hidden_files);
+    total.add(splitPane);
+    total.add(cBXHiddenFiles);
     return total;
   }
 
-  public void displayInfo(CustomFile file) {
-    String can_read = file.canRead() ? "Yes" : "No";
-    String file_info = String.format("MIME Type:\t%s\n", file.getMimeType());
-    file_info +=       String.format("File Path:\t%s\n", file.getPath());
-    file_info +=       String.format("Read Access:\t%s\n", can_read);
-    file_info +=       String.format("Last Modified:\t%s\n", new Date(file.lastModified()).toString());
-    file_info +=       String.format("Last Indexed:\t%s\n", file.getLastIndexed().toString());
-    file_info_.setText(file_info);
+  public void displayInfo(final CustomFile file) {
+    String canRead = (file.canRead()) ? "Yes" : "No";
+    String fileInfoStr = String.format("MIME Type:\t%s\n", file.getMimeType());
+    fileInfoStr +=       String.format("File Path:\t%s\n", file.getPath());
+    fileInfoStr +=       String.format("Read Access:\t%s\n", canRead);
+    fileInfoStr +=       String.format("Last Modified:\t%s\n",
+        new Date(file.lastModified()).toString());
+    fileInfoStr +=       String.format("Last Indexed:\t%s\n",
+        file.getLastIndexed().toString());
+    fileInfo.setText(fileInfoStr);
   }
 
-  public void itemStateChanged(ItemEvent e) {
+  public void itemStateChanged(final ItemEvent e) {
     if (e.getStateChange() == ItemEvent.SELECTED) {
+      System.out.println("Not yet implemented");
       /* TODO implement change view
        * http://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
        * for DynamicTreeDemo
@@ -148,11 +157,11 @@ public class TreeGUI extends JPanel implements ItemListener {
     }
   }
 
-  public static void main(String[] args) {
-    frame_ = new JFrame("File System");
-    frame_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame_.add(new TreeGUI());
-    frame_.pack();               // sets size based on dimensions of components
-    frame_.setVisible(true);
+  public static void main(final String[] args) {
+    frame = new JFrame("File System");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.add(new TreeGUI());
+    frame.pack();               // sets size based on dimensions of components
+    frame.setVisible(true);
   }
 }

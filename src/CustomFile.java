@@ -6,11 +6,11 @@ import javax.activation.MimetypesFileTypeMap;
 public class CustomFile extends File {
 
   private static final long serialVersionUID = 1L;
-  private Date last_indexed_;
-  public CustomFile(String pathname) {
+  private Date lastIndexed;
+  public CustomFile(final String pathname) {
     super(pathname);
     Date today = new Date();
-    last_indexed_ = today;
+    lastIndexed = today;
   }
 
   @Override
@@ -19,7 +19,7 @@ public class CustomFile extends File {
   }
 
   public Date getLastIndexed() {
-    return this.last_indexed_;
+    return this.lastIndexed;
   }
 
   public CustomFile[] listCustomFiles() throws SecurityException {
@@ -28,12 +28,12 @@ public class CustomFile extends File {
       throw new SecurityException();
     }
 
-    CustomFile[] files_custom = new CustomFile[files.length];
+    CustomFile[] filesCustom = new CustomFile[files.length];
     for (int i = 0; i < files.length; i++) {
-      CustomFile file_custom = new CustomFile(files[i].getPath());
-      files_custom[i] = file_custom;
+      CustomFile fileCustom = new CustomFile(files[i].getPath());
+      filesCustom[i] = fileCustom;
     }
-    return files_custom;
+    return filesCustom;
   }
 
   public String getMimeType() {

@@ -7,16 +7,23 @@ import java.util.Enumeration;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class FileSystem {
+public final class FileSystem {
 
-  private static final String CODE_CLASS_DIRECTORY_ = FileSystem.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-  private static final String CODE_DIRECTORY_ = CODE_CLASS_DIRECTORY_.substring(0, CODE_CLASS_DIRECTORY_.length() - 4);
+  private static final String CODE_CLASS_DIRECTORY =
+      FileSystem.class.getProtectionDomain().getCodeSource()
+      .getLocation().getPath();
+  private static final String CODE_DIRECTORY =
+      CODE_CLASS_DIRECTORY.substring(0, CODE_CLASS_DIRECTORY.length() - 4);
 
   public static String getCodeDirectory() {
-    return CODE_DIRECTORY_;
+    return CODE_DIRECTORY;
   }
 
-  public static DefaultMutableTreeNode dirToTree(CustomFile directory) throws FileNotFoundException, SecurityException {
+  private FileSystem() {
+
+  }
+  public static DefaultMutableTreeNode dirToTree(final CustomFile directory)
+      throws FileNotFoundException, SecurityException {
     if (!directory.exists() || !directory.isDirectory()) {
       System.err.println("Failed on: " + directory.getPath());
       throw new FileNotFoundException();
@@ -24,9 +31,9 @@ public class FileSystem {
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode(directory);
     CustomFile[] files = directory.listCustomFiles();
-    if (files == null) {                  // listFiles() returns null if it doesn't give read permission
-      throw new SecurityException();
-    }
+    if (files == null) {             // listFiles() returns null
+      throw new SecurityException(); // if it doesn't give
+    }                                // read permission
 
     for (CustomFile file : files) {
       if (file.isDirectory()) {
@@ -38,32 +45,38 @@ public class FileSystem {
     return root;
   }
 
-  private static DefaultMutableTreeNode removeHiddenFiles(DefaultMutableTreeNode directory) {
-    DefaultMutableTreeNode directory_copy = new DefaultMutableTreeNode();
-    directory_copy = directory;
-    Enumeration<DefaultMutableTreeNode> children = directory_copy.preorderEnumeration();
+  private static DefaultMutableTreeNode removeHiddenFiles(
+      final DefaultMutableTreeNode directory) {
+    DefaultMutableTreeNode directoryCopy = new DefaultMutableTreeNode();
+    directoryCopy = directory;
+    Enumeration<DefaultMutableTreeNode> children =
+        directoryCopy.preorderEnumeration();
     while (children.hasMoreElements()) {
       DefaultMutableTreeNode node = children.nextElement();
       CustomFile file = (CustomFile) node.getUserObject();
       if (file.isHidden()) {
         node.removeFromParent();
-        children = directory_copy.preorderEnumeration();
+        children = directoryCopy.preorderEnumeration();
       }
     }
-    return directory_copy;
+    return directoryCopy;
   }
 
-  public static void makeDirectory(DefaultMutableTreeNode tree, String destination) throws IOException {
+  public static void makeDirectory(final DefaultMutableTreeNode tree,
+      final String destination) throws IOException {
 
   }
 
-  public static void treeToTxtFile(DefaultMutableTreeNode tree, String destination, boolean display_hidden_files) throws IOException {
+  public static void treeToTxtFile(DefaultMutableTreeNode tree,
+      final String destination, final boolean displayHiddenFiles)
+          throws IOException {
     // get name of root directory to name txt file
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getRoot();
-    File root_file = (File) root.getUserObject();
-    PrintWriter out = new PrintWriter(destination + root_file.getName() + ".txt");
+    File rootFile = (File) root.getUserObject();
+    PrintWriter out =
+        new PrintWriter(destination + rootFile.getName() + ".txt");
 
-    if (!display_hidden_files) {
+    if (!displayHiddenFiles) {
       tree = removeHiddenFiles(tree);
     }
 
@@ -81,7 +94,7 @@ public class FileSystem {
     out.close();
   }
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     CustomFile directory;
     try {
       directory = new CustomFile(args[0]);
@@ -90,7 +103,7 @@ public class FileSystem {
       return;
     }
     try {
-      String destination = CODE_DIRECTORY_ + "/txtFiles/";
+      String destination = CODE_DIRECTORY + "/txtFiles/";
 
       DefaultMutableTreeNode tree = dirToTree(directory);
       System.out.println("Built tree");
@@ -103,7 +116,8 @@ public class FileSystem {
     } catch (FileNotFoundException e) {
       System.err.println("File not found");
     } catch (SecurityException e) {
-      System.err.println("The directory or one of its subdirectories is unreadable");
+      System.err.println("The directory or one of"
+          + "its subdirectories is unreadable");
     } catch (IOException e) {
       System.err.println("IOException");
     }
