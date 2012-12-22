@@ -42,14 +42,13 @@ The GUI displays the hierarchy of files and the information about each file.
 # Development #
 ## Not yet implemented ##
 
-    read / write trees in csv format       -- ReadWriteUtil
-
     filter trees based on filename         -- TreeGUI
 
     enable show/hide hidden files checkbox -- TreeGUI
 
 ## bugs: ##
 
+    read access always false               -- TreeGUI
     fix window resizing                    -- TreeGUI
 
 ## Food for thought: ##

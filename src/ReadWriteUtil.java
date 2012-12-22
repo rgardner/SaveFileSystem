@@ -103,11 +103,14 @@ public final class ReadWriteUtil {
         listOfTrees.add(FileSystem.dirToTree(treeDirs.get(0)));
 
         // delete files
-        for (CustomFile dummy : treeFiles) {
-          dummy.delete();
-        }
-        for (int i = treeDirs.size() - 1; i >= 0; i--) {
-          treeDirs.get(i).delete();
+        System.out.println(treeDirs.get(0).getName());
+        if (!treeDirs.get(0).getName().equals("testDirectory")) {
+          for (CustomFile dummy : treeFiles) {
+            dummy.delete();
+          }
+          for (int i = treeDirs.size() - 1; i >= 0; i--) {
+            treeDirs.get(i).delete();
+          }
         }
       } else {
         if (!file.getName().endsWith(".tree")) {
