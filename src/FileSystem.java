@@ -62,11 +62,6 @@ public final class FileSystem {
     return directoryCopy;
   }
 
-  public static void makeDirectory(final DefaultMutableTreeNode tree,
-      final String destination) throws IOException {
-
-  }
-
   public static void treeToTxtFile(DefaultMutableTreeNode tree,
       final String destination, final boolean displayHiddenFiles)
           throws IOException {
@@ -108,7 +103,7 @@ public final class FileSystem {
       DefaultMutableTreeNode tree = dirToTree(directory);
       System.out.println("Built tree");
 
-      ReadWriteUtil.serializeTree(tree, /*use XML*/ false);
+      ReadWriteUtil.serializeTree(tree, /*use CSV*/ true);
       System.out.println("Saved Tree");
 
       treeToTxtFile(tree, destination, false);

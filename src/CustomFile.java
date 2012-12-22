@@ -6,20 +6,30 @@ import javax.activation.MimetypesFileTypeMap;
 public class CustomFile extends File {
 
   private static final long serialVersionUID = 1L;
-  private Date lastIndexed;
+  private long lastIndexed;
+  private String mimeType = new MimetypesFileTypeMap().getContentType(this);
   public CustomFile(final String pathname) {
     super(pathname);
     Date today = new Date();
-    lastIndexed = today;
+    lastIndexed = today.getTime();
+  }
+
+  public CustomFile(final String relativePath, final long lastIndexed,
+      final long lastModified, final boolean readAccess, final String mimeType) {
+    super(relativePath);
+    this.lastIndexed = lastIndexed;
+    setLastModified(lastModified);
+    setReadable(readAccess);
+    this.mimeType = mimeType;
   }
 
   @Override
   public String toString() {
-    return this.getName();
+    return getName();
   }
 
-  public Date getLastIndexed() {
-    return this.lastIndexed;
+  public long lastIndexed() {
+    return lastIndexed;
   }
 
   public CustomFile[] listCustomFiles() throws SecurityException {
@@ -37,6 +47,6 @@ public class CustomFile extends File {
   }
 
   public String getMimeType() {
-    return new MimetypesFileTypeMap().getContentType(this);
+    return mimeType;
   }
 }

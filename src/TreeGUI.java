@@ -38,7 +38,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     List<DefaultMutableTreeNode> directories =
         new ArrayList<DefaultMutableTreeNode>();
     try {
-      directories = ReadWriteUtil.deserializeTreesFromFiles(/*use XML*/ false);
+      directories = ReadWriteUtil.deserializeTreesFromFiles(/*use CSV*/ true);
     } catch (IOException e) {
       System.err.println("Failed to read trees from file");
       e.printStackTrace();
@@ -143,7 +143,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     fileInfoStr +=       String.format("Last Modified:\t%s\n",
         new Date(file.lastModified()).toString());
     fileInfoStr +=       String.format("Last Indexed:\t%s\n",
-        file.getLastIndexed().toString());
+        new Date(file.lastIndexed()).toString());
     fileInfo.setText(fileInfoStr);
   }
 

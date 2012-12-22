@@ -33,8 +33,26 @@ The GUI displays the hierarchy of files and the information about each file.
 
 ##  other:  ##
   
-    testDirectory -    a dummy directory used for testing purposes
+    testDirectory -  a dummy directory used for testing purposes
 
-    treeObjects -      contains the serialized DefaultMutableTreeNode files
+    treeObjects -    contains the serialized DefaultMutableTreeNode files
 
-    txtFiles -         contains txtFiles showing hierarchy of files
+    txtFiles -       contains txtFiles showing hierarchy of files
+
+# Development #
+## Not yet implemented ##
+
+    read / write trees in csv format       -- ReadWriteUtil
+
+    filter trees based on filename         -- TreeGUI
+
+    enable show/hide hidden files checkbox -- TreeGUI
+
+## bugs: ##
+
+    fix window resizing                    -- TreeGUI
+
+## Food for thought: ##
+
+    move fileInfo to the right of the file hierarchy -- TreeGUI
+    Reasoning: trees take up lots of vertical space, so by moving the file info to the right of it, more of the tree is visible at any given moment, takes advantage of empty space
