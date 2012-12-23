@@ -38,7 +38,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     List<DefaultMutableTreeNode> directories =
         new ArrayList<DefaultMutableTreeNode>();
     try {
-      directories = ReadWriteUtil.deserializeTreesFromFiles(/*use CSV*/ true);
+      directories = ReadWriteUtil.deserializeTreesFromFiles();
     } catch (IOException e) {
       System.err.println("Failed to read trees from file");
       e.printStackTrace();

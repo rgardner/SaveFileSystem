@@ -8,24 +8,31 @@ public class CustomFile extends File {
   private static final long serialVersionUID = 1L;
   private long lastIndexed;
   private String mimeType = new MimetypesFileTypeMap().getContentType(this);
+  private boolean canRead;
   public CustomFile(final String pathname) {
     super(pathname);
+    canRead = canRead();
     Date today = new Date();
     lastIndexed = today.getTime();
   }
 
   public CustomFile(final String relativePath, final long lastIndexed,
-      final long lastModified, final boolean readAccess, final String mimeType) {
+      final long lastModified, final boolean canRead, final String mimeType) {
     super(relativePath);
     this.lastIndexed = lastIndexed;
-    setLastModified(lastModified);
-    setReadable(readAccess);
+    this.setLastModified(lastModified);
+    this.canRead = canRead;
     this.mimeType = mimeType;
   }
 
   @Override
   public String toString() {
     return getName();
+  }
+
+  @Override
+  public boolean canRead() {
+    return canRead;
   }
 
   public long lastIndexed() {

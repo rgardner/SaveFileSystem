@@ -103,7 +103,7 @@ public final class FileSystem {
       DefaultMutableTreeNode tree = dirToTree(directory);
       System.out.println("Built tree");
 
-      ReadWriteUtil.serializeTree(tree, /*use CSV*/ true);
+      ReadWriteUtil.serializeTree(tree);
       System.out.println("Saved Tree");
 
       treeToTxtFile(tree, destination, false);

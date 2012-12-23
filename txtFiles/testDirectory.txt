@@ -7,4 +7,4 @@ testDirectory
 --> --> img.gif
 --> test.docx
 
-Created: Sat Dec 08 23:24:34 EST 2012
+Created: Sat Dec 22 16:07:24 PST 2012
