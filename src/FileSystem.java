@@ -1,9 +1,5 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Enumeration;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -13,7 +9,7 @@ public final class FileSystem {
             FileSystem.class.getProtectionDomain().getCodeSource()
             .getLocation().getPath();
     private static final String CODE_DIRECTORY =
-            CODE_CLASS_DIRECTORY.substring(0, CODE_CLASS_DIRECTORY.length() - 4);
+           CODE_CLASS_DIRECTORY.substring(0, CODE_CLASS_DIRECTORY.length() - 4);
 
     public static String getCodeDirectory() {
         return CODE_DIRECTORY;
@@ -46,50 +42,6 @@ public final class FileSystem {
         return root;
     }
 
-    private static DefaultMutableTreeNode removeHiddenFiles(
-            final DefaultMutableTreeNode directory) {
-        DefaultMutableTreeNode directoryCopy = new DefaultMutableTreeNode();
-        directoryCopy = directory;
-        Enumeration<DefaultMutableTreeNode> children =
-                directoryCopy.preorderEnumeration();
-        while (children.hasMoreElements()) {
-            DefaultMutableTreeNode node = children.nextElement();
-            CustomFile file = (CustomFile) node.getUserObject();
-            if (file.isHidden()) {
-                node.removeFromParent();
-                children = directoryCopy.preorderEnumeration();
-            }
-        }
-        return directoryCopy;
-    }
-
-    public static void treeToTxtFile(DefaultMutableTreeNode tree,
-            final String destination, final boolean displayHiddenFiles)
-                    throws IOException {
-        // get name of root directory to name txt file
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getRoot();
-        File rootFile = (File) root.getUserObject();
-        PrintWriter out =
-                new PrintWriter(destination + rootFile.getName() + ".txt");
-
-        if (!displayHiddenFiles) {
-            tree = removeHiddenFiles(tree);
-        }
-
-        Enumeration<DefaultMutableTreeNode> children = tree.preorderEnumeration();
-        while (children.hasMoreElements()) {
-            DefaultMutableTreeNode node = children.nextElement();
-            File file = (File) node.getUserObject();
-            for (int i = 0; i < node.getLevel(); i++) {
-                out.print("--> ");
-            }
-            out.println(file.getName());
-        }
-        Date today = new Date();
-        out.println("\nCreated: " + today.toString());
-        out.close();
-    }
-
     public static void main(final String[] args) {
         CustomFile directory;
         try {
@@ -107,7 +59,7 @@ public final class FileSystem {
             ReadWriteUtil.serializeTree(tree);
             System.out.println("Saved Tree");
 
-            treeToTxtFile(tree, destination, false);
+            ReadWriteUtil.treeToTxtFile(tree, destination, false);
             System.out.println("Success!");
         } catch (FileNotFoundException e) {
             System.err.println("File not found");

@@ -16,13 +16,14 @@ public class CustomFile extends File {
         lastIndexed = today.getTime();
     }
 
-    public CustomFile(final String relativePath, final long lastIndexed,
-            final long lastModified, final boolean canRead, final String mimeType) {
-        super(relativePath);
-        this.lastIndexed = lastIndexed;
-        this.setLastModified(lastModified);
-        this.canRead = canRead;
-        this.mimeType = mimeType;
+    public CustomFile(final String relativePathLoc, final long lastIndexedLoc,
+            final long lastModifiedLoc,
+            final boolean canReadLoc, final String mimeTypeLoc) {
+        super(relativePathLoc);
+        lastIndexed = lastIndexedLoc;
+        setLastModified(lastModifiedLoc);
+        canRead = canReadLoc;
+        mimeType = mimeTypeLoc;
     }
 
     @Override

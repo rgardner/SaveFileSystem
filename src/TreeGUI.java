@@ -58,7 +58,8 @@ public class TreeGUI extends JPanel implements ItemListener {
         add(panel);
     }
 
-    public final JPanel buildDisplay(final List<DefaultMutableTreeNode> directory) {
+    public final JPanel buildDisplay(
+            final List<DefaultMutableTreeNode> directory) {
         JPanel total = new JPanel();
         total.setLayout(new BoxLayout(total, BoxLayout.Y_AXIS));
 
@@ -119,7 +120,8 @@ public class TreeGUI extends JPanel implements ItemListener {
         viewTree.setMinimumSize(minimumSize);
         viewFile.setMinimumSize(minimumSize);
         splitPane.setDividerLocation(dividerLocation);
-        splitPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+        splitPane.setPreferredSize(
+                new Dimension(preferredWidth, preferredHeight));
         splitPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // create checkbox component
@@ -137,7 +139,8 @@ public class TreeGUI extends JPanel implements ItemListener {
 
     public final void displayInfo(final CustomFile file) {
         String canRead = (file.canRead()) ? "Yes" : "No";
-        String fileInfoStr = String.format("MIME Type:\t%s\n", file.getMimeType());
+        String fileInfoStr
+                = String.format("MIME Type:\t%s\n", file.getMimeType());
         fileInfoStr +=       String.format("File Path:\t%s\n", file.getPath());
         fileInfoStr +=       String.format("Read Access:\t%s\n", canRead);
         fileInfoStr +=       String.format("Last Modified:\t%s\n",
@@ -151,7 +154,8 @@ public class TreeGUI extends JPanel implements ItemListener {
         if (e.getStateChange() == ItemEvent.SELECTED) {
             System.out.println("Not yet implemented");
             /* TODO implement change view
-             * http://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
+             * http://docs.oracle.com/
+             * javase/tutorial/uiswing/components/tree.html
              * for DynamicTreeDemo
              */
         }
@@ -161,7 +165,7 @@ public class TreeGUI extends JPanel implements ItemListener {
         frame = new JFrame("File System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new TreeGUI());
-        frame.pack();               // sets size based on dimensions of components
+        frame.pack(); // sets size based on dimensions of components
         frame.setVisible(true);
     }
 }
