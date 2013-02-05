@@ -3,11 +3,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class FileTree extends DefaultMutableTreeNode {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  public DefaultMutableTreeNode filterHiddenFiles() {
-    // TODO implement filterHiddenFiles()
+    public DefaultMutableTreeNode filterHiddenFiles() {
+        // TODO implement filterHiddenFiles()
 
-    return null;
-  }
+        return null;
+    }
 }
