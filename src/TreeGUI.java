@@ -58,7 +58,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     add(panel);
   }
 
-  public JPanel buildDisplay(final List<DefaultMutableTreeNode> directory) {
+  public final JPanel buildDisplay(final List<DefaultMutableTreeNode> directory) {
     JPanel total = new JPanel();
     total.setLayout(new BoxLayout(total, BoxLayout.Y_AXIS));
 
@@ -135,7 +135,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     return total;
   }
 
-  public void displayInfo(final CustomFile file) {
+  public final void displayInfo(final CustomFile file) {
     String canRead = (file.canRead()) ? "Yes" : "No";
     String fileInfoStr = String.format("MIME Type:\t%s\n", file.getMimeType());
     fileInfoStr +=       String.format("File Path:\t%s\n", file.getPath());
@@ -147,7 +147,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     fileInfo.setText(fileInfoStr);
   }
 
-  public void itemStateChanged(final ItemEvent e) {
+  public final void itemStateChanged(final ItemEvent e) {
     if (e.getStateChange() == ItemEvent.SELECTED) {
       System.out.println("Not yet implemented");
       /* TODO implement change view

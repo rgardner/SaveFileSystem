@@ -22,6 +22,7 @@ public final class FileSystem {
   private FileSystem() {
 
   }
+
   public static DefaultMutableTreeNode dirToTree(final CustomFile directory)
       throws FileNotFoundException, SecurityException {
     if (!directory.exists() || !directory.isDirectory()) {

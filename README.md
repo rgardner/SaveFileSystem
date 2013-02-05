@@ -19,8 +19,7 @@ The GUI displays the hierarchy of files and the information about each file.
                      to determine if they use XMLEncoder or ObjectOutputStream. XMLEncoder / XMLDecoder throw runtime
                      exceptions.
 
-    FileSystem -     contains directoryCrawler, treeToTxtFile methods, and the main method that takes a directory as its
-                     argument
+    FileSystem -     contains dirToTree, treeToTxtFile, and main method that takes a dir as its argument
 
     TreeGUI -        contains all the gui code. Chechbox and filter unimplemented, but the gui's laid out.
 
@@ -48,7 +47,6 @@ The GUI displays the hierarchy of files and the information about each file.
 
 ## bugs: ##
 
-    read access always false               -- TreeGUI
     fix window resizing                    -- TreeGUI
 
 ## Food for thought: ##
