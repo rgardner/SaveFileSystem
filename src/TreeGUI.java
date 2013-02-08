@@ -1,12 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -19,18 +21,25 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 
 public class TreeGUI extends JPanel implements ItemListener {
     private static final long serialVersionUID = 1L;
+    private DefaultMutableTreeNode originalTree;
+    private DefaultTreeModel originalTreeModel;
     private static JFrame frame;
-    private JTree tree;
+    private JTree tree = new JTree();
     private JTextArea fileInfo;
     private JTextField fieldFilter;
+    private String filteredText = "";
 
     public TreeGUI() {
         // TODO handle null case from readTreesFromFiles
@@ -63,6 +72,12 @@ public class TreeGUI extends JPanel implements ItemListener {
         JPanel total = new JPanel();
         total.setLayout(new BoxLayout(total, BoxLayout.Y_AXIS));
 
+        // add trees from parameter to one tree
+        originalTree = new DefaultMutableTreeNode();
+        for (DefaultMutableTreeNode file : directory) {
+            originalTree.add(file);
+        }
+
         // create JLabel filter
         JPanel filter = new JPanel();
         filter.setLayout(new BoxLayout(filter, BoxLayout.X_AXIS));
@@ -73,15 +88,25 @@ public class TreeGUI extends JPanel implements ItemListener {
         filter.add(lblFilter, BorderLayout.WEST);
         filter.add(fieldFilter, BorderLayout.CENTER);
         filter.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        // add trees from parameter to one tree
-        DefaultMutableTreeNode allTrees = new DefaultMutableTreeNode();
-        for (DefaultMutableTreeNode file : directory) {
-            allTrees.add(file);
-        }
+        fieldFilter.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+                filterTree();
+            }
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                filterTree();
+            }
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                filterTree();
+            }
+        });
 
         // set up tree JTree
-        tree = new JTree(allTrees);
+        originalTreeModel = new DefaultTreeModel(originalTree);
+        tree.setModel(originalTreeModel);
+        tree.setCellRenderer(new Renderer());
         tree.setRootVisible(false);
         tree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -158,6 +183,68 @@ public class TreeGUI extends JPanel implements ItemListener {
              * javase/tutorial/uiswing/components/tree.html
              * for DynamicTreeDemo
              */
+        }
+    }
+
+    private void filterTree() {
+        filteredText = fieldFilter.getText();
+
+        if (filteredText.trim().toString().equals("")) {
+            // reset the original root
+            originalTreeModel.setRoot(originalTree);
+        } else {
+            TreeNodeBuilder tnb = new TreeNodeBuilder(filteredText);
+            DefaultMutableTreeNode filteredRoot = copyNode(originalTree);
+            filteredRoot
+                = tnb.prune((DefaultMutableTreeNode) filteredRoot.getRoot());
+            originalTreeModel.setRoot(filteredRoot);
+        }
+        tree.setModel(originalTreeModel);
+        tree.updateUI();
+
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }
+
+    }
+
+    private DefaultMutableTreeNode copyNode(DefaultMutableTreeNode orig) {
+
+        DefaultMutableTreeNode newOne = new DefaultMutableTreeNode();
+        newOne.setUserObject(orig.getUserObject());
+
+        Enumeration enm = orig.children();
+
+        while (enm.hasMoreElements()) {
+
+            DefaultMutableTreeNode child
+                = (DefaultMutableTreeNode) enm.nextElement();
+            newOne.add(copyNode(child));
+        }
+        return newOne;
+    }
+
+    class Renderer extends DefaultTreeCellRenderer {
+
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value,
+                boolean selected, boolean expanded, boolean leaf, int row,
+                boolean hasfocus) {
+
+            super.getTreeCellRendererComponent(tree, value,
+                    selected, expanded, leaf, row, hasfocus);
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            if (!filteredText.equals("") && leaf
+                    && value.toString().startsWith(filteredText)) {
+                Font f = getFont();
+                f = new Font("Dialog", Font.BOLD, f.getSize());
+                setFont(f);
+            } else {
+                Font f = getFont();
+                f = new Font("Dialog", Font.PLAIN , f.getSize());
+                setFont(f);
+            }
+            return this;
         }
     }
 

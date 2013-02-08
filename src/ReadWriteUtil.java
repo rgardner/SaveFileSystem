@@ -10,14 +10,14 @@ import java.util.Scanner;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public final class ReadWriteUtil {
-    
+
     private static final int RELATIVE_PATH = 0;
     private static final int LAST_INDEXED = 1;
     private static final int LAST_MODIFIED = 2;
     private static final int CAN_READ = 3;
     private static final int IS_DIRECTORY = 4;
     private static final int MIME_TYPE = 5;
-    
+
     private static String fileLocation = FileSystem.getCodeDirectory()
             + "treeObjects/";
 
@@ -116,7 +116,7 @@ public final class ReadWriteUtil {
         }
         return listOfTrees;
     }
-    
+
     public static void treeToTxtFile(DefaultMutableTreeNode tree,
             final String destination, final boolean displayHiddenFiles)
                     throws IOException {
@@ -144,7 +144,7 @@ public final class ReadWriteUtil {
         out.println("\nCreated: " + today.toString());
         out.close();
     }
-    
+
     private static DefaultMutableTreeNode removeHiddenFiles(
             final DefaultMutableTreeNode directory) {
         DefaultMutableTreeNode directoryCopy = new DefaultMutableTreeNode();
