@@ -91,15 +91,15 @@ public class TreeGUI extends JPanel implements ItemListener {
         fieldFilter.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void changedUpdate(final DocumentEvent e) {
-                filterTree();
+                filterTree(fieldFilter.getText());
             }
             @Override
             public void removeUpdate(final DocumentEvent e) {
-                filterTree();
+                filterTree(fieldFilter.getText());
             }
             @Override
             public void insertUpdate(final DocumentEvent e) {
-                filterTree();
+                filterTree(fieldFilter.getText());
             }
         });
 
@@ -177,17 +177,15 @@ public class TreeGUI extends JPanel implements ItemListener {
 
     public final void itemStateChanged(final ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            System.out.println("Not yet implemented");
-            /* TODO implement change view
-             * http://docs.oracle.com/
-             * javase/tutorial/uiswing/components/tree.html
-             * for DynamicTreeDemo
-             */
+            // actually, the opposite of this is desired, consider regex
+            filterTree(".");
+        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            filterTree("");
         }
     }
 
-    private void filterTree() {
-        filteredText = fieldFilter.getText();
+    private void filterTree(final String filTxt) {
+        filteredText = filTxt;
 
         if (filteredText.trim().toString().equals("")) {
             // reset the original root
