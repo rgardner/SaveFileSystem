@@ -40,6 +40,7 @@ public class TreeGUI extends JPanel implements ItemListener {
     private JTextArea fileInfo;
     private JTextField fieldFilter;
     private String filteredText = "";
+    private boolean displayHiddenFiles = false;
 
     public TreeGUI() {
         // TODO handle null case from readTreesFromFiles
@@ -111,7 +112,8 @@ public class TreeGUI extends JPanel implements ItemListener {
         tree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override public void valueChanged(final TreeSelectionEvent e) {
+            @Override
+            public void valueChanged(final TreeSelectionEvent e) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                         tree.getLastSelectedPathComponent();
                 if (node == null) {
@@ -121,6 +123,7 @@ public class TreeGUI extends JPanel implements ItemListener {
                 displayInfo(file);
             }
         });
+        filterTree("^[^\\.]*$");
         JScrollPane viewTree = new JScrollPane(tree);
         viewTree.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
 
@@ -175,12 +178,15 @@ public class TreeGUI extends JPanel implements ItemListener {
         fileInfo.setText(fileInfoStr);
     }
 
+    @Override
     public final void itemStateChanged(final ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
             // actually, the opposite of this is desired, consider regex
-            filterTree(".");
-        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            displayHiddenFiles = true;
             filterTree("");
+        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            displayHiddenFiles = false;
+            filterTree("^[^\\.]*$");
         }
     }
 
@@ -189,6 +195,7 @@ public class TreeGUI extends JPanel implements ItemListener {
 
         if (filteredText.trim().toString().equals("")) {
             // reset the original root
+            if (originalTreeModel.getRoot().equals(originalTree)) return;
             originalTreeModel.setRoot(originalTree);
         } else {
             TreeNodeBuilder tnb = new TreeNodeBuilder(filteredText);
@@ -232,8 +239,9 @@ public class TreeGUI extends JPanel implements ItemListener {
             super.getTreeCellRendererComponent(tree, value,
                     selected, expanded, leaf, row, hasfocus);
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            if (!filteredText.equals("") && leaf
-                    && value.toString().startsWith(filteredText)) {
+            if (leaf && !filteredText.equals("")
+            && TreeNodeBuilder.patternMatches(filteredText, value.toString())) {
+
                 Font f = getFont();
                 f = new Font("Dialog", Font.BOLD, f.getSize());
                 setFont(f);

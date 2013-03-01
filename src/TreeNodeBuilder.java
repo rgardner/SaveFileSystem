@@ -1,4 +1,5 @@
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.regex.Pattern;
 
 public class TreeNodeBuilder {
 
@@ -42,7 +43,7 @@ public class TreeNodeBuilder {
             DefaultMutableTreeNode nextLeaf = leaf.getNextLeaf();
 
             //if it does not start with the text then snip it off its parent
-            if (!leaf.getUserObject().toString().startsWith(textToMatch)) {
+            if (!patternMatches(textToMatch, leaf.getUserObject().toString())) {
                 DefaultMutableTreeNode parent
                 = (DefaultMutableTreeNode) leaf.getParent();
 
@@ -54,5 +55,21 @@ public class TreeNodeBuilder {
             leaf = nextLeaf;
         }
         return badLeaves;
+    }
+
+    public static boolean patternMatches(final String pattern, final String s) {
+        // determine if string or regex, use indexOf if not, pa
+        if (containsMetaCharacters(pattern)) {
+            return Pattern.matches(pattern, s);
+        } else {
+            return s.indexOf(pattern) != -1;
+        }
+    }
+
+    private static boolean containsMetaCharacters(final String s) {
+        String expression = s;
+        if (expression.equals("")) return false;
+        String escaped = Pattern.quote(expression);
+        return !expression.equals(escaped);
     }
 }
